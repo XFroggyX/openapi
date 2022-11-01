@@ -1,0 +1,577 @@
+openapi: 3.0.0
+info: 
+  title: Кинопоиск
+  version: 0.0.1
+servers:
+  - url: http:://localhost:8080/api/v1/
+    description: Dev server
+
+paths:
+  /favFilms:
+    get:
+      summary: Метод получение любимых фильмов
+      tags:
+        - Favorities films
+      operationId: getAllFilms
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          description: id пользователя
+          schema:
+            type: string
+            example: qwe213-rwqe23-qeewe-2321-213dsas
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ со списком любимых фильмов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Films"
+        "default":
+          description: Успешный ответ со списком любимых фильмов
+          content:
+            application/jsn:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /favFilm:
+    delete:
+      summary: Метод удаления фильма из избранного
+      tags:
+        - Favorities films
+      operationId: deleteFilmFromFavById
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          description: id пользователя
+          schema:
+            type: string
+            example: qwe213-rwqe23-qeewe-2321-213dsas
+        - in: query
+          name: film_id
+          required: true
+          description: id фильма
+          schema:
+            type: string
+            example: qwe213-rwqe23-qeewe-2321-213dsas
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ со списком любимых фильмов
+          content:
+            application/json: {}
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/jsn:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления любимых фильмов
+      tags:
+        - Favorities films
+      operationId: addFavFilms
+      security: 
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: "#/components/schemas/FavorFilms"
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+            application/json: {}
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /user/login:
+    post:
+      summary: Метод авторизации
+      tags:
+        - User
+      operationId: addUser
+      security: 
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/UserCookie"
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/logout:
+      post:
+        summary: Метод выхода
+        tags:
+          - User
+        operationId: logoutUser
+        security: 
+          - {}
+        requestBody:
+          required: true
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/UserCookie"
+        responses:
+          '200':
+            description: Успешный ответ 
+            content:
+              application/json: {}
+          "default":
+            description: Сообщение об ошибке
+            content:
+               application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+  /user/page:
+    get:
+      summary: Метод получения страницы авторизации/регистрации
+      tags:
+        - User
+      operationId: getPage
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Cтраниа авторизации регистрации
+          content:
+            application/json: {}
+        "default":
+            description: Сообщение об ошибке
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+  /user:
+    delete:
+      summary: Метод удаления пользователя
+      tags:
+        - User
+      operationId: deleteUserById
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          description: id пользователя
+          schema:
+            type: string
+            example: qwe213-rwqe23-qeewe-2321-213dsas
+      security: 
+        - {}
+      responses:
+        '200':
+          description: пользователь успешно удален
+          content:
+            application/json: {}
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/jsn:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /feedback:
+    get:
+      summary: Метод получения отзывов по фильму
+      tags: 
+        - Feedback
+      operationId: getFeedbackById
+      parameters: 
+        - name: film_id
+          in: query
+          schema:
+            type: string
+            example: rewr-ewr-ewr-rwer
+          required: true
+          description: Идентификатор фильма
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+             application/json:
+              schema:
+                $ref: "#/components/schemas/FilmFeedback"
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления отзыва по фильму
+      tags: 
+        - Feedback
+      operationId: addFeedback
+      security: 
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: "#/components/schemas/AddFeedBack"
+      responses:
+          '200':
+            description: Успешный ответ 
+            content:
+              application/json: {}
+          "default":
+            description: Сообщение об ошибке
+            content:
+               application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления отзыва
+      tags:
+        - Feedback
+      operationId: deleteFeedbackById
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          description: id пользователя
+          schema:
+            type: string
+            example: qwe213-rwqe23-qeewe-2321-213dsas
+        - in: query
+          name: film_id
+          required: true
+          description: id пользователя
+          schema:
+            type: string
+            example: qwe213-rwqe23-qeewe-2321-213dsas
+      security: 
+        - {}
+      responses:
+        '200':
+          description: пользователь успешно удален
+          content:
+            application/json: {}
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/jsn:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /pageFilm:
+    get:
+      summary: Метод получения описание фильма
+      tags: 
+        - Page film services
+      operationId: getFilmkById
+      parameters: 
+        - name: film_id
+          in: query
+          schema:
+            type: string
+            example: rewr-ewr-ewr-rwer
+          required: true
+          description: Идентификатор фильма
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+             application/json:
+              schema:
+                $ref: "#/components/schemas/Film"
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления фильма
+      tags:
+        - Page film services
+      operationId: deleteFilmById
+      parameters:
+        - in: query
+          name: film_id
+          required: true
+          description: id фильма
+          schema:
+            type: string
+            example: qwe213-rwqe23-qeewe-2321-213dsas
+      security: 
+        - {}
+      responses:
+        '200':
+          description: фильма удален успешно
+          content:
+            application/json: {}
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/jsn:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /seache:
+    get:
+      summary: Метод получения фильма
+      tags: 
+        - Seache services
+      operationId: getSeacheFilmById
+      parameters: 
+        - name: film_id
+          in: query
+          schema:
+            type: string
+            example: rewr-ewr-ewr-rwer
+          required: true
+          description: Идентификатор фильма
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+             application/json:
+              {}
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /film/mainPage:
+    get:
+      summary: Метод получения главной страницы
+      tags: 
+        - Films
+      operationId: getMainPage
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+             application/json:
+              {}
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /film:
+    get:
+      summary: Метод получения описания фильма
+      tags: 
+        - Films
+      operationId: getFilmDescById
+      parameters: 
+        - name: film_id
+          in: query
+          schema:
+            type: string
+            example: rewr-ewr-ewr-rwer
+          required: true
+          description: Идентификатор фильма
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+             application/json:
+              schema:
+                $ref: "#/components/schemas/Film"
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления фильмов на сайт
+      tags: 
+        - Films
+      operationId: addFilms
+      security: 
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: "#/components/schemas/AddFilms"
+      responses:
+          '200':
+            description: Успешный ответ 
+            content:
+              application/json: {}
+          "default":
+            description: Сообщение об ошибке
+            content:
+               application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"  
+  /film/favFilm:
+    get:
+      summary: Метод получения избранных фильмов
+      tags: 
+        - Films
+      operationId: getFavFilmById
+      parameters: 
+        - name: user_id
+          in: query
+          schema:
+            type: string
+            example: rewr-ewr-ewr-rwer
+          required: true
+          description: Идентификатор фильма
+      security: 
+        - {}
+      responses:
+        '200':
+          description: Успешный ответ 
+          content:
+             application/json:
+              schema:
+                $ref: "#/components/schemas/FavorFilms"
+        "default":
+          description: Сообщение об ошибке
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Film:
+      type: object
+      required:
+        - name
+        - status
+      properties:
+        film_id:
+          type: string
+          example: qwe213-rwqe23-qeewe-2321-213dsas
+        name:
+          type: string
+          example: Один дома
+        description:
+          type: string
+          example: Описание фильма
+    Films:
+      type: array
+      items:
+        $ref: "#/components/schemas/Film"
+    FavorFilms:
+      type: object
+      required:
+        - user_id
+        - films
+      properties:
+        user_id:
+          type: string
+          example: qwe213-rwqe23-qeewe-2321-213dsas
+        films:
+          type: array
+          items:
+            $ref: "#/components/schemas/Film"
+    User:
+      type: object
+      required: 
+        - login
+        - email
+        - password
+      properties:
+        login:
+          type: string
+          example: user
+        email:
+          type: string
+          format: user@some.mail
+        password:
+          type: string
+          example: qwerty
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+          
+    UserCookie:
+      type: object
+      required: 
+        - cookie
+      properties:
+        cookie:
+          type: string
+          example: rwerqwr-werqqwer-ewqrr-werq
+    
+    FilmFeedback:
+      type: object
+      properties:
+        film_id:
+          type: string
+          example: wert234-fsadf324-dfa3-dsf
+        items:
+          $ref: "#/components/schemas/Feedback"
+  
+    Feedback:
+      type: object
+      properties:
+        feedback1:
+          type: string
+          example: Some message
+        rating:
+          type: integer
+          example: 2  
+          
+    AddFeedBack:
+      type: object
+      properties:
+        film_id:
+          type: string
+          example: afdf-asfda-asdfa-adf
+        user_id:
+          type: string
+          example: asd-fdsaf-sdf2f-sadf
+        feedback:
+          type: string
+          example: some text
+        rating:
+          type: integer
+          example: 5  
+          
+    AddFilms:
+      type: array
+      items:
+        $ref: "#/components/schemas/Film"
+        
+            
